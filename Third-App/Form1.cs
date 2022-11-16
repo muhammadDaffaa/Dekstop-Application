@@ -1,20 +1,9 @@
 ﻿using EasyModbus;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using LiveCharts;
 using LiveCharts.Wpf;
-using LiveCharts.WinForms;
-using LiveCharts.Defaults;
 using LiveCharts.Configurations;
 
 namespace Third_App
@@ -26,9 +15,12 @@ namespace Third_App
         private Button currentButton;
         private Random random;
         private int tempIndex;
-        private ModbusClient modbusClient;
         private string dataSensor;
+        public string displayData;
         private ChartValues<MeasureModel> chartValues;
+        public ChartValues<MeasureModel> ChartValues { get => chartValues; set => chartValues = value; }
+        public Timer Timer { get; set; }
+        //public Random R { get; set; }
 
         public Form1()
         {
@@ -46,6 +38,7 @@ namespace Third_App
 
             //the ChartValues property will store our values array
             ChartValues = new ChartValues<MeasureModel>();
+
             cartesianChart1.Series = new LiveCharts.SeriesCollection
             {
                 new LineSeries
@@ -77,10 +70,6 @@ namespace Third_App
             Timer.Start();
         }
 
-        public ChartValues<MeasureModel> ChartValues { get => chartValues; set => chartValues = value; }
-        public Timer Timer { get; set; }
-        //public Random R { get; set; }
-
         private void SetAxisLimits(DateTime now)
         {
             cartesianChart1.AxisX[0].MaxValue = now.Ticks + TimeSpan.FromSeconds(1).Ticks; // lets force the axis to be 100ms ahead
@@ -95,7 +84,7 @@ namespace Third_App
             {
                 DateTime = now,
                 //Value = R.Next(0, 10)
-                Value = Convert.ToDouble(dataSensor)
+                Value = Convert.ToDouble(VarGlobal.dataTemperatureSensor)
             });
 
             SetAxisLimits(now);
@@ -180,61 +169,19 @@ namespace Third_App
         private void Form1_Load(object sender, EventArgs e)
         {
 
-
         }
 
-        private void ComModbusTCP()
+        private void ComModbusTCPSiemens()
         {
 
-            modbusClient = new ModbusClient("192.168.18.178", 502);    //Ip-Address and Port of Modbus-TCP-Server
-            modbusClient.Connect();                                                    //Connect to Server
-                                                                                       //modbusClient.WriteMultipleCoils(4, new bool[] { true, true, true, true, true, true, true, true, true, true });    //Write Coils starting with Address 5
-                                                                                       //bool[] readCoils = modbusClient.ReadCoils(9, 10);                        //Read 10 Coils from Server, starting with address 10
-            int[] readHoldingRegisters = modbusClient.ReadHoldingRegisters(0, 5);    //Read 10 Holding Registers from Server, starting with Address 1
-
-            Console.WriteLine(readHoldingRegisters);
-            // Console Output
-            // for (int i = 0; i < readCoils.Length; i++)
-            //    Console.WriteLine("Value of Coil " + (9 + i + 1) + " " + readCoils[i].ToString())
-
-
-            for (int i = 0; i < readHoldingRegisters.Length; i++)
-            {
-
-                //Console.WriteLine(ConvertDW2Float((short)readHoldingRegisters[1], (short)readHoldingRegisters[0]));
-                dataSensor = ConvertDW2Float((short)readHoldingRegisters[1], (short)readHoldingRegisters[0]).ToString();
-                label2.Text = ConvertDW2Float((short)readHoldingRegisters[1], (short)readHoldingRegisters[0]).ToString();
-                Console.WriteLine(dataSensor);
-            }
-
-            //Disconnect from Server
-            modbusClient.Disconnect();
-        }
-
-
-        //Program Orang
-        private double ConvertDW2Float(short int1, short int2)
-        {
-            byte[] intBytes1 = BitConverter.GetBytes(int1);
-            if (BitConverter.IsLittleEndian) Array.Reverse(intBytes1);
-            // byte[] result1 = intBytes1;
-            byte[] intBytes2 = BitConverter.GetBytes(int2);
-            if (BitConverter.IsLittleEndian) Array.Reverse(intBytes2);
-            //byte[] result2 = intBytes2;
-            byte[] _bytes = new byte[4];
-            _bytes[0] = intBytes1[1];
-            _bytes[1] = intBytes1[0];
-            _bytes[2] = intBytes2[1];
-            _bytes[3] = intBytes2[0];
-            double _val = BitConverter.ToSingle(_bytes, 0);
-            _val = Math.Round(_val, 3);
-
-            return _val;
+            ConModbusTCP modbusClient = new ConModbusTCP("192.168.18.178", 502);
+            modbusClient.ModbusTCPReadHoldingRegisters(dataSensor);
+            label2.Text = VarGlobal.dataTemperatureSensor;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            ComModbusTCP();
+            ComModbusTCPSiemens();
         }
 
         private void chart1_Click(object sender, EventArgs e)
