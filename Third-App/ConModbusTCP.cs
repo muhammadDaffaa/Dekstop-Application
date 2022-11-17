@@ -33,7 +33,7 @@ namespace Third_App
             {
                 VarGlobal.dataTemperatureSensor = dataSensor;
                 dataSensor = ConvertDW2Float((short)readHoldingRegisters[1], (short)readHoldingRegisters[0]).ToString();
-            }
+            } 
 
             //Disconnect from Server
             modbusClient.Disconnect();

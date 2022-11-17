@@ -5,6 +5,10 @@ using System.Windows.Forms;
 using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Configurations;
+using LiveCharts.WinForms;
+//using System.Windows.Media;
+using System.Windows;
+
 
 namespace Third_App
 {
@@ -27,6 +31,7 @@ namespace Third_App
             InitializeComponent();
             random = new Random();
             timer1.Start();
+
 
             //Chart
             var mapper = Mappers.Xy<MeasureModel>()
@@ -91,6 +96,7 @@ namespace Third_App
 
             //lets only use the last 30 values
             if (ChartValues.Count > 30) ChartValues.RemoveAt(0);
+
         }
 
         //Methods

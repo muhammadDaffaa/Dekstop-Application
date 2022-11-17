@@ -41,6 +41,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.solidGauge1 = new LiveCharts.WinForms.SolidGauge();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.SuspendLayout();
@@ -163,7 +165,7 @@
             this.panelTopBar.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTopBar.Location = new System.Drawing.Point(199, 0);
             this.panelTopBar.Name = "panelTopBar";
-            this.panelTopBar.Size = new System.Drawing.Size(1055, 29);
+            this.panelTopBar.Size = new System.Drawing.Size(1055, 50);
             this.panelTopBar.TabIndex = 2;
             // 
             // label2
@@ -198,11 +200,27 @@
             // 
             this.cartesianChart1.BackColor = System.Drawing.Color.Azure;
             this.cartesianChart1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cartesianChart1.Location = new System.Drawing.Point(225, 202);
+            this.cartesianChart1.Location = new System.Drawing.Point(213, 175);
             this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(378, 284);
+            this.cartesianChart1.Size = new System.Drawing.Size(313, 225);
             this.cartesianChart1.TabIndex = 5;
             this.cartesianChart1.Text = "cartesianChart1";
+            // 
+            // solidGauge1
+            // 
+            this.solidGauge1.Location = new System.Drawing.Point(575, 292);
+            this.solidGauge1.Name = "solidGauge1";
+            this.solidGauge1.Size = new System.Drawing.Size(192, 108);
+            this.solidGauge1.TabIndex = 6;
+            this.solidGauge1.Text = "solidGauge1";
+            // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(829, 179);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(298, 230);
+            this.pieChart1.TabIndex = 7;
+            this.pieChart1.Text = "pieChart1";
             // 
             // Form1
             // 
@@ -210,6 +228,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Orchid;
             this.ClientSize = new System.Drawing.Size(1254, 840);
+            this.Controls.Add(this.pieChart1);
+            this.Controls.Add(this.solidGauge1);
             this.Controls.Add(this.cartesianChart1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -240,6 +260,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timer1;
         private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private LiveCharts.WinForms.SolidGauge solidGauge1;
+        private LiveCharts.WinForms.PieChart pieChart1;
     }
 }
 
